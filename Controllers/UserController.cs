@@ -63,7 +63,7 @@ namespace CoolApi.Controllers
             new Claim("Password", user.password),
             new Claim("id", user.id.ToString()),
             new Claim("active", user.active.ToString()),
-            new Claim("role", user.role),
+            new Claim("role", user.role.ToString()),
 
             // Add additional claims as needed
         }),
@@ -84,15 +84,41 @@ namespace CoolApi.Controllers
 
         [HttpPost]
         [Route("AddUsers")]
-        [Authorize]
 
         public IActionResult CreateStudent(User user)
         {
+
+
             _cxt.Users.Add(user);
             _cxt.SaveChanges();
 
             return Ok();
         }
 
+        [HttpPost]
+        [Route("VerifyOTP")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserActiveStatus(int? id)
+        {
+            try
+            {
+                var user = await _cxt.Users.FirstOrDefaultAsync(u => u.id == id);
+                Console.WriteLine("user id "+id);
+                if (user != null)
+                {
+                    user.active = 1;
+                    await _cxt.SaveChangesAsync();
+
+                    return Ok(true);
+                }
+
+                return NotFound("User not found.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error updating user active status: " + e.Message);
+                return StatusCode(500, "An error occurred while updating the user's active status.");
+            }
+        }
     }
 }

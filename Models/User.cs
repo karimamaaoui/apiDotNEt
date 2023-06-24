@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -16,7 +17,7 @@ namespace CoolApi.Models
         public string phone { get; set; } = "";
         public string country { get; set; } = "";
         public string address { get; set; } = "";
-        public string role { get; set; } = "";
+        public string role { get; set; } = "User";
         public DateTime DateInscription { get; set; } = DateTime.Today;
         public int active { get; set; } = 0;
 
