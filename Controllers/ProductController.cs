@@ -34,40 +34,40 @@ namespace CoolApi.Controllers
             return products;
         }
 
-[HttpGet]
-[Route("GetProductsByPagination")]
-[Authorize]
-public async Task<IActionResult> GetAll(int page = 1, int pageSize = 3)
-{
-    // Calculate the number of items to skip based on the current page and page size
-    int skipCount = (page - 1) * pageSize;
+        [HttpGet]
+        [Route("GetProductsByPagination")]
+        [Authorize]
+        public async Task<IActionResult> GetAll(int page = 1, int pageSize = 3)
+        {
+            // Calculate the number of items to skip based on the current page and page size
+            int skipCount = (page - 1) * pageSize;
 
-    // Retrieve the products with pagination
-    var products = await _cxt.Products
-        .Skip(skipCount)
-        .Take(pageSize)
-        .ToListAsync();
+            // Retrieve the products with pagination
+            var products = await _cxt.Products
+                .Skip(skipCount)
+                .Take(pageSize)
+                .ToListAsync();
 
-    // Retrieve the total count of products
-    int totalCount = await _cxt.Products.CountAsync();
+            // Retrieve the total count of products
+            int totalCount = await _cxt.Products.CountAsync();
 
-    // Create a pagination response object
-    var response = new
-    {
-        Page = page,
-        PageSize = pageSize,
-        TotalCount = totalCount,
-        Products = products
-    };
+            // Create a pagination response object
+            var response = new
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                Products = products
+            };
 
-    return Ok(response);
-}
+            return Ok(response);
+        }
 
 
         [HttpPost]
         [Route("AddProduct")]
 
-        public IActionResult CreateStudent(Product product)
+        public IActionResult CreateProduct(Product product)
         {
             _cxt.Products.Add(product);
             _cxt.SaveChanges();
@@ -112,7 +112,7 @@ public async Task<IActionResult> GetAll(int page = 1, int pageSize = 3)
 
             return Ok(product);
         }
-        
+
         [HttpDelete]
         [Route("deleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -144,6 +144,18 @@ public async Task<IActionResult> GetAll(int page = 1, int pageSize = 3)
             }
 
             return Ok(product);
+        }
+
+        [HttpPost]
+        [Route("searchproduct")]
+        [Authorize]
+        public IActionResult SearchUser(string search)
+        {
+            string query = $"SELECT * FROM products WHERE name LIKE '%{search}%' OR price LIKE '%{search}%' OR qty LIKE '%{search}%';";
+            var searchResults = _cxt.Products.FromSqlRaw(query).ToList();
+
+            // Return the search results
+            return Ok(searchResults);
         }
 
 

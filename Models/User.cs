@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoolApi.Models
 {
     public class User
     {
+        [Key]
         public int id { get; set; }
         public string email { get; set; } = "";
         public string password { get; set; } = "";

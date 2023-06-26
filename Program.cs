@@ -53,6 +53,16 @@ builder.Services.AddDbContext<UserContext>(options =>
 builder.Services.AddDbContext<ProductContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("ProductConnection")));
 
+builder.Services.AddDbContext<AdsContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("AdsConnection")));
+
+builder.Services.AddDbContext<CategorieContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("CategorieConnection")));
+
+builder.Services.AddDbContext<CountriesContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("CountriesConnection")));
+builder.Services.AddDbContext<CitiesContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("CitiesConnection")));
 
 
 var app = builder.Build();

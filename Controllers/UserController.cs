@@ -83,16 +83,19 @@ namespace CoolApi.Controllers
 
 
         [HttpPost]
-        [Route("AddUsers")]
-
+        [Route("register")]
         public IActionResult CreateStudent(User user)
         {
-
+            var existingUser = _cxt.Users.FirstOrDefault(u => u.email == user.email);
+            if (existingUser != null)
+            {
+                return Conflict("User already exists.");
+            }
 
             _cxt.Users.Add(user);
             _cxt.SaveChanges();
 
-            return Ok();
+            return Ok("User created successfully.");
         }
 
         [HttpPost]
@@ -103,7 +106,7 @@ namespace CoolApi.Controllers
             try
             {
                 var user = await _cxt.Users.FirstOrDefaultAsync(u => u.id == id);
-                Console.WriteLine("user id "+id);
+                Console.WriteLine("user id " + id);
                 if (user != null)
                 {
                     user.active = 1;
@@ -120,5 +123,19 @@ namespace CoolApi.Controllers
                 return StatusCode(500, "An error occurred while updating the user's active status.");
             }
         }
+
+        [HttpPost]
+        [Route("search")]
+        [Authorize]
+        public IActionResult SearchUser(string search)
+        {
+            string query = $"SELECT * FROM Users WHERE firstname LIKE '%{search}%' OR email LIKE '%{search}%';";
+            var searchResults = _cxt.Users.FromSqlRaw(query).ToList();
+
+            // Return the search results
+            return Ok(searchResults);
+        }
+
+
     }
 }
