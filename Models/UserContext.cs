@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
+using CoolApi.Models;
 namespace CoolApi.Models
 {
     public class UserContext : DbContext
@@ -10,6 +10,9 @@ namespace CoolApi.Models
         }
         
         public DbSet<User> Users { get; set; }
+
+        
+
     }
 
 }

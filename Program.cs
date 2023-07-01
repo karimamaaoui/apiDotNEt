@@ -28,8 +28,7 @@ builder.Services.AddSwaggerGen(s=>
         Type =  Microsoft.OpenApi.Models.SecuritySchemeType.Http,
         BearerFormat="JWT",
         Scheme="bearer"
-    })
-);
+    }));
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -46,6 +45,7 @@ builder.Services.AddSwaggerGen(options =>
             new List<string>()
         }
     });
+
 });
 
 builder.Services.AddDbContext<UserContext>(options =>

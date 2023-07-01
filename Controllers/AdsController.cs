@@ -37,12 +37,15 @@ namespace CoolApi.Controllers
 
             return Ok();
         }
+
+
         [HttpGet]
         [Route("getAds")]
+        [Authorize]
         public async Task<IEnumerable<Ads>> GetAll()
         {
             var ads = await _cxt.Adss
-                .Select(a => new Ads
+              /*  .Select(a => new Ads
                 {
                     IdAds=a.IdAds,
                     Title = a.Title,
@@ -65,7 +68,7 @@ namespace CoolApi.Controllers
 
 
 
-                })
+                })*/
                 .ToListAsync();
 
             return ads;

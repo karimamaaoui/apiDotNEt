@@ -10,6 +10,10 @@ using CoolApi.Models;
 using CoolApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace CoolApi.Controllers
 
@@ -20,11 +24,17 @@ namespace CoolApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductContext _cxt;
+        private readonly ILogger<ProductController> _logger;
+        public static IWebHostEnvironment _webHostEnivronment;
 
-        public ProductController(ProductContext context)
+        public ProductController(ProductContext context, IWebHostEnvironment webHostEnvironment)
         {
             _cxt = context;
+            _webHostEnivronment = webHostEnvironment;
+
         }
+
+
         [HttpGet]
         [Route("GetProducts")]
         [Authorize]
@@ -61,6 +71,56 @@ namespace CoolApi.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("AddProductimg")]
+        public async Task<string> CreateProductWithImage([FromForm] Product product)
+        {
+            try
+            {
+                if (product.ImageFile != null && product.ImageFile.Length > 0)
+                {
+                    string path = _webHostEnivronment.WebRootPath + "\\images\\";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + product.ImageFile.FileName;
+                    string filePath = Path.Combine(path, uniqueFileName);
+
+                    using (FileStream fileStream = System.IO.File.Create(filePath))
+                    {
+                        await product.ImageFile.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
+                    }
+
+                    // Convert the image file to a byte array
+                    byte[] imageData;
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        await product.ImageFile.CopyToAsync(memoryStream);
+                        imageData = memoryStream.ToArray();
+                    }
+
+                    // Assign the image data to the imagePrinciple property
+                    product.imagePrinciple = imageData;
+
+                    _cxt.Products.Add(product);
+                    _cxt.SaveChanges();
+
+                    return "Upload Done.";
+                }
+                else
+                {
+                    return "Failed: No file uploaded.";
+                }
+            }
+            catch (Exception e)
+            {
+                return $"Error: {e.Message}\nInner Exception: {e.InnerException}\nStack Trace: {e.StackTrace}";
+            }
         }
 
 
@@ -158,7 +218,46 @@ namespace CoolApi.Controllers
             return Ok(searchResults);
         }
 
+        [HttpGet]
+        [Route("GetProduct")]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var products = await _cxt.Products.ToListAsync();
+            var responseList = new List<object>();
 
+            foreach (var product in products)
+            {
+                if (product.imagePrinciple != null && product.imagePrinciple.Length > 0)
+                {
+                    var base64Image = Convert.ToBase64String(product.imagePrinciple);
+
+                    var response = new
+                    {
+                        Id = product.Id,
+                        Price = product.price,
+                        ImageBase64 = base64Image
+
+                    
+                    };
+
+                    responseList.Add(response);
+                     
+
+                }
+            }
+
+            return Ok(responseList);
+        }
+
+
+        private byte[] ImageToByteArray(Image image)
+        {
+            using (var stream = new MemoryStream())
+            {
+                image.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
+            }
+        }
 
         /*
         public async Task<ActionResult<Product>> UpdateProducts(int id, Product product)
@@ -180,7 +279,7 @@ namespace CoolApi.Controllers
 
         }
 
-        
+
          private List<Product> products = new List<Product>()
          {
              new Product()

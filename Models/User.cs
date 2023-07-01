@@ -24,7 +24,5 @@ namespace CoolApi.Models
         public int active { get; set; } = 0;
 
 
-
-
     }
 }
