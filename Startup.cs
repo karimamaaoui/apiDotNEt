@@ -1,3 +1,5 @@
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
 
 namespace MyApi
 {
@@ -12,6 +14,7 @@ namespace MyApi
             });
 
         }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -29,6 +32,23 @@ namespace MyApi
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+
+                // Serve the static video files
+                c.RoutePrefix = "swagger";
+                c.DocumentTitle = "API Documentation";
+                c.InjectStylesheet("/swagger-custom/custom-styles.css"); // Customize the Swagger UI styles if needed
+                var videosPath = Path.Combine(env.ContentRootPath, "Videos");
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(videosPath),
+                    RequestPath = "/videos"
+                });
+            });
+
 
             app.UseEndpoints(endpoints =>
             {

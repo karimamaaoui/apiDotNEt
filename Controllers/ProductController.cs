@@ -35,6 +35,87 @@ namespace CoolApi.Controllers
         }
 
 
+
+        [HttpPost]
+        [Route("AddProductWithFiles")]
+        public async Task<string> CreateProductWithFiles([FromForm] Product productFiles)
+        {
+            try
+            {
+                if (productFiles.ImageFile != null && productFiles.ImageFile.Length > 0 && productFiles.VideoFile != null && productFiles.VideoFile.Length > 0)
+                {
+                    string imagePath = _webHostEnivronment.WebRootPath + "\\images\\";
+                    string videoPath = _webHostEnivronment.WebRootPath + "\\videos\\";
+
+                    if (!Directory.Exists(imagePath))
+                    {
+                        Directory.CreateDirectory(imagePath);
+                    }
+
+                    if (!Directory.Exists(videoPath))
+                    {
+                        Directory.CreateDirectory(videoPath);
+                    }
+
+                    string uniqueImageFileName = Guid.NewGuid().ToString() + "_" + productFiles.ImageFile.FileName;
+                    string uniqueVideoFileName = Guid.NewGuid().ToString() + "_" + productFiles.VideoFile.FileName;
+
+                    string imageFilePath = Path.Combine(imagePath, uniqueImageFileName);
+                    string videoFilePath = Path.Combine(videoPath, uniqueVideoFileName);
+
+                    using (FileStream imageFileStream = System.IO.File.Create(imageFilePath))
+                    {
+                        await productFiles.ImageFile.CopyToAsync(imageFileStream);
+                        await imageFileStream.FlushAsync();
+                    }
+
+                    using (FileStream videoFileStream = System.IO.File.Create(videoFilePath))
+                    {
+                        await productFiles.VideoFile.CopyToAsync(videoFileStream);
+                        await videoFileStream.FlushAsync();
+                    }
+
+                    // Convert the image file to a byte array
+                    byte[] imageData;
+                    using (MemoryStream imageMemoryStream = new MemoryStream())
+                    {
+                        await productFiles.ImageFile.CopyToAsync(imageMemoryStream);
+                        imageData = imageMemoryStream.ToArray();
+                    }
+
+                    // Convert the video file to a byte array
+                    byte[] videoData;
+                    using (MemoryStream videoMemoryStream = new MemoryStream())
+                    {
+                        await productFiles.VideoFile.CopyToAsync(videoMemoryStream);
+                        videoData = videoMemoryStream.ToArray();
+                    }
+
+                    // Assign the image and video data to the respective properties
+                    Product product = new Product
+                    {
+                        // Assign other properties as needed
+                        imagePrinciple = imageData,
+                        VideoData = videoData
+                    };
+
+                    _cxt.Products.Add(product);
+                    _cxt.SaveChanges();
+
+                    return "Upload Done.";
+                }
+                else
+                {
+                    return "Failed: No file uploaded.";
+                }
+            }
+            catch (Exception e)
+            {
+                return $"Error: {e.Message}\nInner Exception: {e.InnerException}\nStack Trace: {e.StackTrace}";
+            }
+        }
+
+
         [HttpGet]
         [Route("GetProducts")]
         [Authorize]
@@ -146,9 +227,9 @@ namespace CoolApi.Controllers
             }
 
             // Update the properties only if they are not null or empty in the update request
-            if (!string.IsNullOrEmpty(p.name))
+            if (!string.IsNullOrEmpty(p.title))
             {
-                product.name = p.name;
+                product.title = p.title;
             }
 
             if (p.price != 0)
@@ -220,149 +301,151 @@ namespace CoolApi.Controllers
 
         [HttpGet]
         [Route("GetProduct")]
-        public async Task<IActionResult> GetAllProducts()
+      public async Task<IActionResult> GetAllProducts(int page = 1, int pageSize = 3)
+{
+    var skipCount = (page - 1) * pageSize;
+    var products = await _cxt.Products.Skip(skipCount).Take(pageSize).ToListAsync();
+
+    var responseList = new List<object>();
+
+    foreach (var product in products)
+    {
+        // Convert product data to response format
+        var response = new
         {
-            var products = await _cxt.Products.ToListAsync();
-            var responseList = new List<object>();
+            Id = product.Id,
+            Price = product.price,
+            ImageBase64 = Convert.ToBase64String(product.imagePrinciple),
+            VideoBase64 = Convert.ToBase64String(product.VideoData),
+            qty = product.qty,
+            Description = product.Description,
+            Details = product.Details,
+            title = product.title,
+            CodeBar = product.CodeBar,
+            Color = product.Color,
+            DatePublication = product.DatePublication
+        };
 
-            foreach (var product in products)
-            {
-                if (product.imagePrinciple != null && product.imagePrinciple.Length > 0)
-                {
-                    var base64Image = Convert.ToBase64String(product.imagePrinciple);
+        responseList.Add(response);
+    }
 
-                    var response = new
-                    {
-                        Id = product.Id,
-                        Price = product.price,
-                        ImageBase64 = base64Image
-
-                    
-                    };
-
-                    responseList.Add(response);
-                     
-
-                }
-            }
-
-            return Ok(responseList);
-        }
+    return Ok(responseList);
+}
 
 
-        private byte[] ImageToByteArray(Image image)
+    private byte[] ImageToByteArray(Image image)
+    {
+        using (var stream = new MemoryStream())
         {
-            using (var stream = new MemoryStream())
-            {
-                image.Save(stream, ImageFormat.Png);
-                return stream.ToArray();
-            }
+            image.Save(stream, ImageFormat.Png);
+            return stream.ToArray();
         }
+    }
 
-        /*
-        public async Task<ActionResult<Product>> UpdateProducts(int id, Product product)
+    /*
+    public async Task<ActionResult<Product>> UpdateProducts(int id, Product product)
+    {
+        if (id != product.Id)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-            _cxt.Entry(product).State = EntityState.Modified;
-            try
-            {
-                await _cxt.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-            }
-            return product;
-
+            return BadRequest();
         }
-
-
-         private List<Product> products = new List<Product>()
-         {
-             new Product()
-             {
-                 Id = 1,
-                 Name = "karima"
-             },
-             new Product()
-             {
-                 Id = 2,
-                 Name = "aaa"
-             }
-         };
-
-             [HttpGet]
-             [Route("GetProducts")]
-
-             public async Task<ActionResult<Product>> GetProducts(){
-
-
-                 return Ok(products);
-
-             }
-
-             [HttpGet]
-             [Route("GetProduct")]
-
-             public async Task<ActionResult<Product>> GetProduct(int id){
-
-                 var product=products.Find(x=>x.Id==id);
-                 if (product==null){
-                     return BadRequest("no product found !");
-
-                 }
-                 return Ok(product);
-
-             }
-
-             [HttpPost]
-             [Route("addProducts")]
-
-             public async Task<ActionResult<Product>> AddProducts(Product p){
-
-                 products.Add(p);
-
-                 return Ok(products);
-
-             }
-
-
-             [HttpPut]
-             [Route("updateProducts")]
-
-           public async Task<ActionResult<Product>> UpdateProducts(Product p){
-             var product=products.Find(x=>x.Id==p.Id);
-                 if (product==null){
-                     return BadRequest("no product found !");
-
-                 }
-                 product.Id=p.Id;
-                 product.Name=p.Name;
-
-                 return Ok(products);
-
-             }
-
-             [HttpDelete]
-             [Route("updateProducts")]
-
-             public async Task<ActionResult<Product>> DeleteProducts(int id){
-
-             var product=products.Find(x=>x.Id==id);
-                 if (product==null){
-                     return BadRequest("no product found !");
-
-                 }
-                 products.Remove(product);
-
-                 return Ok(products);
-
-             }
-     */
-
+        _cxt.Entry(product).State = EntityState.Modified;
+        try
+        {
+            await _cxt.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return NotFound();
+        }
+        return product;
 
     }
+
+
+     private List<Product> products = new List<Product>()
+     {
+         new Product()
+         {
+             Id = 1,
+             Name = "karima"
+         },
+         new Product()
+         {
+             Id = 2,
+             Name = "aaa"
+         }
+     };
+
+         [HttpGet]
+         [Route("GetProducts")]
+
+         public async Task<ActionResult<Product>> GetProducts(){
+
+
+             return Ok(products);
+
+         }
+
+         [HttpGet]
+         [Route("GetProduct")]
+
+         public async Task<ActionResult<Product>> GetProduct(int id){
+
+             var product=products.Find(x=>x.Id==id);
+             if (product==null){
+                 return BadRequest("no product found !");
+
+             }
+             return Ok(product);
+
+         }
+
+         [HttpPost]
+         [Route("addProducts")]
+
+         public async Task<ActionResult<Product>> AddProducts(Product p){
+
+             products.Add(p);
+
+             return Ok(products);
+
+         }
+
+
+         [HttpPut]
+         [Route("updateProducts")]
+
+       public async Task<ActionResult<Product>> UpdateProducts(Product p){
+         var product=products.Find(x=>x.Id==p.Id);
+             if (product==null){
+                 return BadRequest("no product found !");
+
+             }
+             product.Id=p.Id;
+             product.Name=p.Name;
+
+             return Ok(products);
+
+         }
+
+         [HttpDelete]
+         [Route("updateProducts")]
+
+         public async Task<ActionResult<Product>> DeleteProducts(int id){
+
+         var product=products.Find(x=>x.Id==id);
+             if (product==null){
+                 return BadRequest("no product found !");
+
+             }
+             products.Remove(product);
+
+             return Ok(products);
+
+         }
+ */
+
+
+}
 }
