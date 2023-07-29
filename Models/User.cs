@@ -22,6 +22,7 @@ namespace CoolApi.Models
         public string role { get; set; } = "User";
         public DateTime DateInscription { get; set; } = DateTime.Today;
         public int active { get; set; } = 0;
+        public string RefreshToken { get; set; } ="";
 
 
     }

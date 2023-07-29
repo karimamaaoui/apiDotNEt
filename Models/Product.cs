@@ -27,5 +27,7 @@ namespace CoolApi.Models
 
         public byte[] VideoData { get; set; }
 
+        public int IdCateg { get; set; }
+
     }
 }

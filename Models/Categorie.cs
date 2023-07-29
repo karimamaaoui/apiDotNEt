@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoolApi.Models
 {
@@ -13,7 +14,10 @@ namespace CoolApi.Models
 
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
-        public string ImageCat { get; set; } = "";
+        
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
+        public byte[] ImageCat { get; set; } 
 
         public int Active { get; set; }
     }
