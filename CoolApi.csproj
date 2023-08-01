@@ -8,6 +8,12 @@
 
   <ItemGroup>
   
+  
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+  
+  
+    <PackageReference Include="MailKit" Version="4.1.0" />
+  
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
   
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
@@ -28,6 +34,9 @@
 
 
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.8" />
+
+
+    <PackageReference Include="MimeKit" Version="4.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.31.0" />
   </ItemGroup>

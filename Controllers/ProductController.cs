@@ -75,6 +75,7 @@ namespace CoolApi.Controllers
                         await videoFileStream.FlushAsync();
                     }
 
+                    // Convert the image file to a byte array
                     byte[] imageData;
                     using (MemoryStream imageMemoryStream = new MemoryStream())
                     {
@@ -82,6 +83,7 @@ namespace CoolApi.Controllers
                         imageData = imageMemoryStream.ToArray();
                     }
 
+                    // Convert the video file to a byte array
                     byte[] videoData;
                     using (MemoryStream videoMemoryStream = new MemoryStream())
                     {
@@ -89,8 +91,10 @@ namespace CoolApi.Controllers
                         videoData = videoMemoryStream.ToArray();
                     }
 
+                    // Assign the image and video data to the respective properties
                     Product product = new Product
                     {
+                        // Assign other properties as needed
                         imagePrinciple = imageData,
                         VideoData = videoData
                     };
@@ -121,6 +125,34 @@ namespace CoolApi.Controllers
             return products;
         }
 
+        [HttpGet]
+        [Route("GetProductsByPagination")]
+        [Authorize]
+        public async Task<IActionResult> GetAll(int page = 1, int pageSize = 3)
+        {
+            // Calculate the number of items to skip based on the current page and page size
+            int skipCount = (page - 1) * pageSize;
+
+            // Retrieve the products with pagination
+            var products = await _cxt.Products
+                .Skip(skipCount)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Retrieve the total count of products
+            int totalCount = await _cxt.Products.CountAsync();
+
+            // Create a pagination response object
+            var response = new
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                Products = products
+            };
+
+            return Ok(response);
+        }
 
         [HttpPost]
         [Route("AddProductimg")]
@@ -145,6 +177,7 @@ namespace CoolApi.Controllers
                         await fileStream.FlushAsync();
                     }
 
+                    // Convert the image file to a byte array
                     byte[] imageData;
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
@@ -152,6 +185,7 @@ namespace CoolApi.Controllers
                         imageData = memoryStream.ToArray();
                     }
 
+                    // Assign the image data to the imagePrinciple property
                     product.imagePrinciple = imageData;
 
                     _cxt.Products.Add(product);
@@ -192,6 +226,7 @@ namespace CoolApi.Controllers
                 return BadRequest("No product found!");
             }
 
+            // Update the properties only if they are not null or empty in the update request
             if (!string.IsNullOrEmpty(p.title))
             {
                 product.title = p.title;
@@ -255,11 +290,12 @@ namespace CoolApi.Controllers
         [HttpPost]
         [Route("searchproduct")]
         [Authorize]
-        public IActionResult SearchProduct(string search)
+        public IActionResult SearchUser(string search)
         {
             string query = $"SELECT * FROM products WHERE name LIKE '%{search}%' OR price LIKE '%{search}%' OR qty LIKE '%{search}%';";
             var searchResults = _cxt.Products.FromSqlRaw(query).ToList();
 
+            // Return the search results
             return Ok(searchResults);
         }
 
@@ -274,6 +310,7 @@ namespace CoolApi.Controllers
 
             foreach (var product in products)
             {
+                // Convert product data to response format
                 var response = new
                 {
                     Id = product.Id,
@@ -286,9 +323,7 @@ namespace CoolApi.Controllers
                     title = product.title,
                     CodeBar = product.CodeBar,
                     Color = product.Color,
-                    DatePublication = product.DatePublication,
-                    IdCateg = product.IdCateg
-
+                    DatePublication = product.DatePublication
                 };
 
                 responseList.Add(response);
@@ -310,6 +345,7 @@ namespace CoolApi.Controllers
 
             foreach (var product in products)
             {
+                // Convert product data to response format
                 var response = new
                 {
                     Id = product.Id,
@@ -322,9 +358,7 @@ namespace CoolApi.Controllers
                     title = product.title,
                     CodeBar = product.CodeBar,
                     Color = product.Color,
-                    DatePublication = product.DatePublication,
-                    IdCateg = product.IdCateg
-
+                    DatePublication = product.DatePublication
                 };
 
                 responseList.Add(response);
@@ -359,8 +393,7 @@ namespace CoolApi.Controllers
                     title = product.title,
                     CodeBar = product.CodeBar,
                     Color = product.Color,
-                    DatePublication = product.DatePublication,
-                    IdCateg = product.IdCateg
+                    DatePublication = product.DatePublication
                 };
 
                 responseList.Add(response);
@@ -377,6 +410,40 @@ namespace CoolApi.Controllers
                 return stream.ToArray();
             }
         }
+
+
+        [HttpPost]
+        [Route("filterproduct")]
+        public IActionResult FilteredProducts(string keyword, int categoryId, decimal minPrice, decimal maxPrice)
+        {
+            var query = _cxt.Products.AsQueryable();
+
+            // Apply filters based on provided criteria
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(p => p.title.Contains(keyword) || p.Description.Contains(keyword));
+            }
+
+            if (categoryId != 0)
+            {
+                query = query.Where(p => p.IdCateg == categoryId);
+            }
+
+            if (minPrice > 0)
+            {
+                query = query.Where(p => p.price >= minPrice);
+            }
+            if (maxPrice > 0)
+            {
+                query = query.Where(p => p.price <= maxPrice);
+            }
+
+
+            List<Product> filteredProducts = query.ToList();
+
+            return Ok(filteredProducts);
+        }
+
 
     }
 

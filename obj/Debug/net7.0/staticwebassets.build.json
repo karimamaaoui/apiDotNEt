@@ -1,11 +1,71 @@
 {
   "Version": 1,
-  "Hash": "EPwGcPVrXiYH6CvK2wTopByItHa9Y7wur5Ervf1/WRw=",
+  "Hash": "DDTJGQ7k4V/FMr3AQznNHZPhUX5va59MrRjPpUrEkr4=",
   "Source": "CoolApi",
   "BasePath": "_content/CoolApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "CoolApi\\wwwroot",
+      "Source": "CoolApi",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\",
+      "BasePath": "_content/CoolApi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG",
+      "SourceId": "CoolApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\",
+      "BasePath": "_content/CoolApi",
+      "RelativePath": "Images/4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG"
+    },
+    {
+      "Identity": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\7596637d-f1b1-4911-acba-e74d47d5496d_Capture.PNG",
+      "SourceId": "CoolApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\",
+      "BasePath": "_content/CoolApi",
+      "RelativePath": "Images/7596637d-f1b1-4911-acba-e74d47d5496d_Capture.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\7596637d-f1b1-4911-acba-e74d47d5496d_Capture.PNG"
+    },
+    {
+      "Identity": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG",
+      "SourceId": "CoolApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\",
+      "BasePath": "_content/CoolApi",
+      "RelativePath": "Images/94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG"
+    }
+  ]
 }

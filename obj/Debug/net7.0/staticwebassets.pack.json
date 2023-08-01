@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG",
+      "PackagePath": "staticwebassets\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\7596637d-f1b1-4911-acba-e74d47d5496d_Capture.PNG",
+      "PackagePath": "staticwebassets\\Images\\7596637d-f1b1-4911-acba-e74d47d5496d_Capture.PNG"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG",
+      "PackagePath": "staticwebassets\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.CoolApi.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.CoolApi.props",
+      "PackagePath": "build\\CoolApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.CoolApi.props",
+      "PackagePath": "buildMultiTargeting\\CoolApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.CoolApi.props",
+      "PackagePath": "buildTransitive\\CoolApi.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

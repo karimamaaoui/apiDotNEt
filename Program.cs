@@ -67,6 +67,9 @@ builder.Services.AddDbContext<CitiesContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CitiesConnection")));
 
 
+builder.Services.AddDbContext<FeaturesContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("FeaturesConnection")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -77,7 +80,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseAuthorization();
 app.UseAuthorization();
 app.MapControllers();
