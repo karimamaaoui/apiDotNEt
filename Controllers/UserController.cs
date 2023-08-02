@@ -62,7 +62,7 @@ namespace CoolApi.Controllers
             new Claim("role", user.role.ToString()),
             new Claim("refreshToken", user.RefreshToken),
         }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
