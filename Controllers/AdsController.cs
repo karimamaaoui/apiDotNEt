@@ -37,6 +37,7 @@ namespace CoolApi.Controllers
 
             return uniqueFileName;
         }
+
         [HttpGet("NbrAdsByUser")]
         public IActionResult NbrAdsByUser(int iduser)
         {

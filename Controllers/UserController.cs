@@ -246,6 +246,9 @@ namespace CoolApi.Controllers
             return Ok(searchResults);
         }
 
+
+
+
         [HttpPut("UpdateUser")]
         public IActionResult UpdateUser(int id, [FromBody] User updatedUser)
         {
@@ -267,8 +270,6 @@ namespace CoolApi.Controllers
                 existingUser.lastname = updatedUser.lastname;
             }
 
-            // Do not update the email if it is not provided in the request
-            // existingUser.email = updatedUser.email;
 
             if (!string.IsNullOrEmpty(updatedUser.phone))
             {
@@ -290,7 +291,30 @@ namespace CoolApi.Controllers
 
             return Ok(existingUser);
         }
-      
+
+
+        [HttpPut("AddImageUser")]
+        public IActionResult AddImageUser(int id, [FromForm] User updatedUser, IFormFile imageFile)
+        {
+            var existingUser = _cxt.Users.FirstOrDefault(u => u.id == id);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+            if (imageFile != null)
+            {
+                string imagePathOrUrl = SaveImageAndGetUrl(imageFile);
+                existingUser.picture = imagePathOrUrl;
+            }
+
+            _cxt.SaveChanges();
+
+            return Ok(existingUser);
+        }
+
+
+
+
         [HttpGet("GetUserById")]
         public IActionResult GetUserById(int id)
         {
@@ -306,7 +330,6 @@ namespace CoolApi.Controllers
             }
             catch (Exception ex)
             {
-                // Log the error and return an error response
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving user.");
             }
         }
@@ -383,6 +406,24 @@ namespace CoolApi.Controllers
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+
+        private string SaveImageAndGetUrl(IFormFile imageFile)
+        {
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                imageFile.CopyTo(fileStream);
+            }
+
+            return uniqueFileName;
+        }
+
+
+
 
     }
 }

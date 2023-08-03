@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "DDTJGQ7k4V/FMr3AQznNHZPhUX5va59MrRjPpUrEkr4=",
+  "Hash": "B6tK+vDLXYuf7UsKLqIIyEYQnVcPtz4dJvq5BatvsKM=",
   "Source": "CoolApi",
   "BasePath": "_content/CoolApi",
   "Mode": "Default",
@@ -16,6 +16,23 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\3140fd4b-9775-4337-a672-ce07a44d8c5b_captures.PNG",
+      "SourceId": "CoolApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\",
+      "BasePath": "_content/CoolApi",
+      "RelativePath": "Images/3140fd4b-9775-4337-a672-ce07a44d8c5b_captures.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\3140fd4b-9775-4337-a672-ce07a44d8c5b_captures.PNG"
+    },
     {
       "Identity": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG",
       "SourceId": "CoolApi",
@@ -66,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG"
+    },
+    {
+      "Identity": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\f2e7a3c7-7a1f-46ed-b858-7f3b350b3311_sql server.PNG",
+      "SourceId": "CoolApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\",
+      "BasePath": "_content/CoolApi",
+      "RelativePath": "Images/f2e7a3c7-7a1f-46ed-b858-7f3b350b3311_sql server.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\f2e7a3c7-7a1f-46ed-b858-7f3b350b3311_sql server.PNG"
     }
   ]
 }

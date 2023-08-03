@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\3140fd4b-9775-4337-a672-ce07a44d8c5b_captures.PNG",
+      "PackagePath": "staticwebassets\\Images\\3140fd4b-9775-4337-a672-ce07a44d8c5b_captures.PNG"
+    },
+    {
       "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG",
       "PackagePath": "staticwebassets\\Images\\4852a032-d03b-424b-ad93-73c70c19074f_Capture.PNG"
     },
@@ -11,6 +15,10 @@
     {
       "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG",
       "PackagePath": "staticwebassets\\Images\\94519aa8-9192-438d-af85-3d30cd2a3612_stage.PNG"
+    },
+    {
+      "Id": "C:\\Users\\user\\Desktop\\Net\\CoolApi\\wwwroot\\Images\\f2e7a3c7-7a1f-46ed-b858-7f3b350b3311_sql server.PNG",
+      "PackagePath": "staticwebassets\\Images\\f2e7a3c7-7a1f-46ed-b858-7f3b350b3311_sql server.PNG"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.CoolApi.Microsoft.AspNetCore.StaticWebAssets.props",

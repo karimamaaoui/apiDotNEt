@@ -24,6 +24,7 @@ namespace CoolApi.Models
         public int active { get; set; } = 0;
         public string RefreshToken { get; set; } ="";
 
+        public string? picture{ get; set; }="";
 
     }
 }
